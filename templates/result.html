@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Analysis Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        table { width: 80%; margin: auto; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Analysis Results</h1>
+    <button onclick="copyAllToClipboard()">📋 Copy Entire Table</button>
+    <table id="resultsTable">
+        <tr>
+            <th>URL</th>
+            <th>Title</th>
+            <th>Title Length</th>
+            <th>Meta Description</th>
+            <th>Description Length</th>
+            <th>Copy</th>
+        </tr>
+        {% for page in page_data %}
+        <tr>
+            <td><a href="{{ page.url }}" target="_blank">{{ page.url }}</a></td>
+            <td>{{ page.title }}</td>
+            <td>{{ page.title_length }}</td>
+            <td>{{ page.description }}</td>
+            <td>{{ page.desc_length }}</td>
+            <td><button onclick="copyToClipboard('{{ page.url }}', '{{ page.title }}', '{{ page.description }}')">📋 Copy</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">Analyze another sitemap</a>
+
+    <script>
+        function copyToClipboard(url, title, description) {
+            const text = `URL: ${url}\nTitle: ${title}\nDescription: ${description}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+        function copyAllToClipboard() {
+        let text = "URL | Title | Title Length | Meta Description | Description Length\n";
+        document.querySelectorAll("table tr").forEach((row, index) => {
+            if (index === 0) return; // Skip table headers
+            let cells = row.querySelectorAll("td");
+            if (cells.length > 0) {
+                text += `${cells[0].textContent} | ${cells[1].textContent} | ${cells[2].textContent} | ${cells[3].textContent} | ${cells[4].textContent}\n`;
+            }
+        });
+
+        navigator.clipboard.writeText(text).then(() => {
+            alert("All data copied to clipboard!");
+        }).catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+        }
+    </script>
+</body>
+</html>
