@@ -8,3 +8,9 @@ Then run python app.py
 
 open page in browser enter URL for sitemap
 
+
+
+Notes:
+
+Use pip freeze > requirements.txt
+Then you can just pip install -r requirements.txt
